@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BlendShapeToRotation : MonoBehaviour
+{
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+    public string blendShapeName;
+    public Transform targetTransform;
+    public Vector3 rotationAxis = Vector3.left;
+    public float rotationScale = 1.0f;
+
+    private int blendShapeIndex;
+
+    private void Start()
+    {
+        blendShapeIndex = skinnedMeshRenderer.sharedMesh.GetBlendShapeIndex(blendShapeName);
+    }
+
+    private void Update()
+    {
+        float blendShapeValue = skinnedMeshRenderer.GetBlendShapeWeight(blendShapeIndex);
+        float rotationAmount = blendShapeValue * rotationScale;
+
+        // Apply the rotation to the target transform
+        targetTransform.rotation = Quaternion.Euler(rotationAxis * rotationAmount);
+    }
+}
